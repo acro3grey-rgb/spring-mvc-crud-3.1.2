@@ -1,6 +1,6 @@
-# Spring MVC CRUD Application
+# Spring Boot MVC CRUD Application 3.1.1
 
-CRUD-приложение на Spring MVC с использованием Hibernate (JPA) и MySQL.
+CRUD-приложение на Spring Boot MVC с использованием Hibernate (JPA), Thymeleaf и MySQL.
 
 Реализовано:
 - просмотр пользователей
@@ -9,11 +9,30 @@ CRUD-приложение на Spring MVC с использованием Hibern
 - удаление
 
 Технологии:
-Java 17, Spring MVC, Hibernate (EntityManager), MySQL, Thymeleaf, Tomcat 10, Maven.
+Java 17, Spring Boot, Spring MVC, Hibernate (EntityManager), MySQL, Thymeleaf, Maven.
 
-Конфигурация выполнена через JavaConfig и аннотации (AppInit, WebConfig, PersistenceConfig) без использования XML и Spring Boot.
+Конфигурация выполнена через Spring Boot auto-configuration и `application.properties`.
+Приложение запускается со встроенным web-сервером.
 
 Запуск:
-mvn clean package → скопировать .war в Tomcat/webapps → открыть http://localhost:8080/spring-mvc-crud/users
+
+```text
+mvn spring-boot:run
+```
+
+После запуска открыть:
+
+```text
+http://localhost:8080/users
+```
+
+Перед запуском должна быть доступна MySQL-база `testdb`.
+При необходимости параметры подключения можно задать через переменные окружения:
+
+```text
+DB_URL
+DB_USERNAME
+DB_PASSWORD
+```
 
 Автор: https://github.com/acro3grey-rgb
