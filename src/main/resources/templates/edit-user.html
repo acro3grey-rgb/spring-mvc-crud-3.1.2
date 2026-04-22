@@ -8,17 +8,33 @@
 
 <h2>Edit user</h2>
 
-<form th:action="@{/users/{id}(id=${user.id})}" th:object="${user}" method="post">
+<form th:action="@{/logout}" method="post">
+    <button type="submit">Logout</button>
+</form>
+
+<form th:action="@{/admin/{id}(id=${user.id})}" th:object="${user}" method="post">
     <input type="text" th:field="*{name}" required>
     <input type="text" th:field="*{surname}" required>
     <input type="email" th:field="*{email}" required>
+    <input type="text" th:field="*{username}" required>
+    <input type="password" name="password" value="" placeholder="New password">
+
+    <div>
+        <label th:each="role : ${roles}">
+            <input type="checkbox"
+                   name="roleIds"
+                   th:value="${role.id}"
+                   th:checked="${user.roles.contains(role)}">
+            <span th:text="${role.name}"></span>
+        </label>
+    </div>
 
     <button type="submit">Update</button>
 </form>
 
 <br>
 
-<a th:href="@{/users}">Back to users</a>
+<a th:href="@{/admin}">Back to users</a>
 
 </body>
 </html>
