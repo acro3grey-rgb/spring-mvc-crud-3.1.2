@@ -3,7 +3,6 @@ package com.serg.controller;
 import com.serg.model.User;
 import com.serg.service.UserService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,11 +17,9 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-    private final PasswordEncoder passwordEncoder;
 
-    public UserController(UserService userService, PasswordEncoder passwordEncoder) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping("/")
@@ -41,7 +38,6 @@ public class UserController {
     @PostMapping("/admin")
     public String addUser(@ModelAttribute("newUser") User user,
                           @RequestParam(value = "roleIds", required = false) List<Long> roleIds) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoles(userService.getRolesByIds(roleIds));
         userService.addUser(user);
         return "redirect:/admin";
@@ -68,16 +64,10 @@ public class UserController {
     public String updateUser(@PathVariable("id") Long id,
                              @ModelAttribute("user") User user,
                              @RequestParam(value = "roleIds", required = false) List<Long> roleIds) {
-        User existingUser = userService.getUserById(id);
-        if (existingUser == null) {
+        if (userService.getUserById(id) == null) {
             return "redirect:/admin";
         }
         user.setId(id);
-        if (user.getPassword() == null || user.getPassword().isBlank()) {
-            user.setPassword(existingUser.getPassword());
-        } else {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-        }
         user.setRoles(userService.getRolesByIds(roleIds));
         userService.updateUser(user);
         return "redirect:/admin";

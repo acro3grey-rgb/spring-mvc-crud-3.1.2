@@ -1,0 +1,117 @@
+databaseChangeLog:
+  - changeSet:
+      id: 004-seed-roles
+      author: codex
+      preConditions:
+        - onFail: MARK_RAN
+        - sqlCheck:
+            expectedResult: "0"
+            sql: select count(*) from roles where name in ('ROLE_ADMIN', 'ROLE_USER')
+      changes:
+        - insert:
+            tableName: roles
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: 1
+              - column:
+                  name: name
+                  value: ROLE_ADMIN
+        - insert:
+            tableName: roles
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: 2
+              - column:
+                  name: name
+                  value: ROLE_USER
+
+  - changeSet:
+      id: 005-seed-users
+      author: codex
+      preConditions:
+        - onFail: MARK_RAN
+        - sqlCheck:
+            expectedResult: "0"
+            sql: select count(*) from users where username in ('admin', 'user')
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: 1
+              - column:
+                  name: name
+                  value: Admin
+              - column:
+                  name: surname
+                  value: Adminov
+              - column:
+                  name: email
+                  value: admin@example.com
+              - column:
+                  name: username
+                  value: admin
+              - column:
+                  name: password
+                  value: $2a$10$V5Z.tdbR31jhJpBaSdFtXuVvlzbLY57I83qR3taxW3R1B5Gt34P9W
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: 2
+              - column:
+                  name: name
+                  value: User
+              - column:
+                  name: surname
+                  value: Userov
+              - column:
+                  name: email
+                  value: user@example.com
+              - column:
+                  name: username
+                  value: user
+              - column:
+                  name: password
+                  value: $2a$10$2pBoRnY/Gi/ShEdT9RBsCep7qG.lSrJRd3DmzYtWLuP/byFZULp1y
+
+  - changeSet:
+      id: 006-seed-users-roles
+      author: codex
+      preConditions:
+        - onFail: MARK_RAN
+        - sqlCheck:
+            expectedResult: "0"
+            sql: select count(*) from users_roles where user_id in (1, 2)
+      changes:
+        - insert:
+            tableName: users_roles
+            columns:
+              - column:
+                  name: user_id
+                  valueNumeric: 1
+              - column:
+                  name: role_id
+                  valueNumeric: 1
+        - insert:
+            tableName: users_roles
+            columns:
+              - column:
+                  name: user_id
+                  valueNumeric: 1
+              - column:
+                  name: role_id
+                  valueNumeric: 2
+        - insert:
+            tableName: users_roles
+            columns:
+              - column:
+                  name: user_id
+                  valueNumeric: 2
+              - column:
+                  name: role_id
+                  valueNumeric: 2
